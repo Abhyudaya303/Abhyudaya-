@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Love-o-Meter: An Important Question</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Comic Sans MS', 'Chalkboard SE', cursive, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #ffafbd, #ffc3a0);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            padding: 30px;
+            text-align: center;
+            margin-top: 20px;
+            border: 8px solid #ff6b8b;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .container::before {
+            content: "";
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            background: linear-gradient(45deg, #ff6b8b, #ff8e53, #ff6b8b);
+            z-index: -1;
+            border-radius: 35px;
+        }
+        
+        h1 {
+            color: #ff6b8b;
+            font-size: 2.8rem;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 0 #ffd6dd;
+        }
+        
+        .subtitle {
+            color: #ff8e53;
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+            font-weight: bold;
+        }
+        
+        .heart-container {
+            font-size: 4rem;
+            color: #ff6b8b;
+            margin: 20px 0;
+            animation: heartbeat 1.2s infinite;
+        }
+        
+        @keyframes heartbeat {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        .message-box {
+            background: linear-gradient(to right, #fff5f7, #ffe8ec);
+            border-radius: 20px;
+            padding: 25px;
+            margin: 25px 0;
+            border: 3px dashed #ff6b8b;
+            text-align: left;
+            font-size: 1.3rem;
+            line-height: 1.6;
+            color: #555;
+        }
+        
+        .question-box {
+            background: linear-gradient(to right, #e3f2fd, #bbdefb);
+            border-radius: 20px;
+            padding: 25px;
+            margin: 25px 0;
+            border: 3px solid #64b5f6;
+            text-align: center;
+        }
+        
+        .question-box h2 {
+            color: #2196f3;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
+        
+        .love-meter {
+            width: 100%;
+            height: 40px;
+            background-color: #e0e0e0;
+            border-radius: 20px;
+            margin: 25px 0;
+            overflow: hidden;
+            position: relative;
+            border: 3px solid #ff6b8b;
+        }
+        
+        .love-fill {
+            height: 100%;
+            width: 100%;
+            background: linear-gradient(to right, #ffafbd, #ff6b8b);
+            border-radius: 20px;
+            transition: width 0.8s ease;
+        }
+        
+        .meter-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-weight: bold;
+            color: #fff;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+            font-size: 1.2rem;
+        }
+        
+        .buttons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin: 30px 0;
+        }
+        
+        .btn {
+            padding: 18px 30px;
+            font-size: 1.3rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 180px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .yes-btn {
+            background: linear-gradient(to right, #4CAF50, #8BC34A);
+            color: white;
+        }
+        
+        .no-btn {
+            background: linear-gradient(to right, #f44336, #FF9800);
+            color: white;
+        }
+        
+        .btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .btn:active {
+            transform: translateY(0);
+        }
+        
+        .response {
+            margin-top: 25px;
+            padding: 20px;
+            border-radius: 20px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            display: none;
+            animation: fadeIn 0.8s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .yes-response {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+            border: 3px solid #4CAF50;
+        }
+        
+        .no-response {
+            background-color: #ffebee;
+            color: #c62828;
+            border: 3px solid #f44336;
+        }
+        
+        .funny-quotes {
+            margin-top: 30px;
+            font-style: italic;
+            color: #666;
+            font-size: 1.1rem;
+            line-height: 1.5;
+        }
+        
+        .footer {
+            margin-top: 30px;
+            color: #777;
+            font-size: 1rem;
+            text-align: center;
+        }
+        
+        .hearts {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .heart {
+            position: absolute;
+            color: rgba(255, 107, 139, 0.6);
+            font-size: 20px;
+            animation: float 5s linear infinite;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        /* Mobile optimizations */
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .container {
+                padding: 20px;
+                margin-top: 10px;
+            }
+            
+            .message-box, .question-box {
+                padding: 20px;
+                font-size: 1.1rem;
+            }
+            
+            .btn {
+                padding: 15px 25px;
+                font-size: 1.2rem;
+                min-width: 160px;
+            }
+            
+            .heart-container {
+                font-size: 3.5rem;
+            }
+        }
+        
+        @media (max-width: 400px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn {
+                width: 100%;
+                max-width: 250px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="hearts" id="hearts"></div>
+    
+    <div class="container">
+        <div class="heart-container">
+            <i class="fas fa-heart"></i>
+            <i class="fas fa-heart"></i>
+            <i class="fas fa-heart"></i>
+        </div>
+        
+        <h1>Love-o-Meter 3000</h1>
+        <p class="subtitle">The Most Scientific Way to Measure Love! (Patent Pending)</p>
+        
+        <div class="message-box">
+            <p>Dear Amazing Girlfriend,</p>
+            <p>I have something very important to tell you... I LOVE YOU SOOO MUCH! 💖</p>
+            <p>Like, "would-eat-the-last-piece-of-pizza-and-feel-guilty-about-it" love you.</p>
+            <p>Like, "watch-your-favorite-show-even-though-I've-seen-it-10-times" love you.</p>
+            <p>Like, "share-my-fries-with-you-even-when-I-really-want-them-all" love you.</p>
+            <p>You're the avocado to my toast, the Netflix to my chill, the wifi to my internet. You complete me!</p>
+        </div>
+        
+        <div class="question-box">
+            <h2>Now, the million-dollar question...</h2>
+            <p>Do you love me back? (Asking for a friend... the friend is me)</p>
+            
+            <div class="love-meter">
+                <div class="love-fill" id="loveFill" style="width: 0%"></div>
+                <div class="meter-text" id="meterText">Love Level: 0%</div>
+            </div>
+            
+            <div class="buttons">
+                <button class="btn yes-btn" id="yesBtn">
+                    <i class="fas fa-heart"></i> YES! Of Course!
+                </button>
+                <button class="btn no-btn" id="noBtn">
+                    <i class="fas fa-question"></i> Umm... Let me think
+                </button>
+            </div>
+        </div>
+        
+        <div class="response" id="response"></div>
+        
+        <div class="funny-quotes">
+            <p>"Love is sharing your popcorn even when you're still hungry." - Anonymous Popcorn Lover</p>
+            <p>"True love is when someone remembers how you take your coffee." - Every Coffee Shop Ever</p>
+            <p>"If love were a pizza, you'd be the extra cheese." - Pizza Philosopher</p>
+        </div>
+        
+        <div class="footer">
+            <p>Made with <i class="fas fa-heart" style="color:#ff6b8b"></i> by someone who loves you way too much</p>
+            <p>This website uses 100% organic, free-range love. No artificial preservatives.</p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Create floating hearts
+            const heartsContainer = document.getElementById('hearts');
+            for (let i = 0; i < 30; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                heart.innerHTML = '❤';
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.animationDelay = Math.random() * 5 + 's';
+                heart.style.fontSize = (Math.random() * 20 + 15) + 'px';
+                heartsContainer.appendChild(heart);
+            }
+            
+            const yesBtn = document.getElementById('yesBtn');
+            const noBtn = document.getElementById('noBtn');
+            const responseDiv = document.getElementById('response');
+            const loveFill = document.getElementById('loveFill');
+            const meterText = document.getElementById('meterText');
+            
+            let loveLevel = 0;
+            let yesClicks = 0;
+            
+            // Yes button logic
+            yesBtn.addEventListener('click', function() {
+                yesClicks++;
+                
+                if (yesClicks === 1) {
+                    loveLevel = 100;
+                    loveFill.style.width = loveLevel + '%';
+                    meterText.textContent = 'Love Level: 100%!';
+                    
+                    responseDiv.className = 'response yes-response';
+                    responseDiv.innerHTML = `
+                        <i class="fas fa-heart"></i> YAY! You made me the happiest person alive! 
+                        <br><br>
+                        I knew it! Our love is officially scientifically proven by the Love-o-Meter 3000! 
+                        <br><br>
+                        Now let's celebrate with pizza! 🍕
+                    `;
+                    responseDiv.style.display = 'block';
+                    
+                    // Create celebration hearts
+                    for (let i = 0; i < 50; i++) {
+                        setTimeout(() => {
+                            createCelebrationHeart();
+                        }, i * 100);
+                    }
+                } else if (yesClicks === 2) {
+                    responseDiv.innerHTML = `
+                        <i class="fas fa-heart"></i> You said yes AGAIN? That's double the love! 
+                        <br><br>
+                        I'm so lucky to have you! Now I owe you double the pizza! 🍕🍕
+                    `;
+                } else {
+                    responseDiv.innerHTML = `
+                        <i class="fas fa-heart"></i> Okay, now you're just showing off! 
+                        <br><br>
+                        But seriously, I love you infinity times infinity! Let's get ALL the pizza! 🍕🍕🍕
+                    `;
+                }
+                
+                // Animate button
+                yesBtn.style.transform = 'scale(1.1)';
+                setTimeout(() => {
+                    yesBtn.style.transform = 'scale(1)';
+                }, 200);
+            });
+            
+            // No button logic (with humor)
+            noBtn.addEventListener('mouseover', function() {
+                // Move button to random position
+                const maxX = window.innerWidth - noBtn.offsetWidth - 50;
+                const maxY = window.innerHeight - noBtn.offsetHeight - 50;
+                
+                const randomX = Math.floor(Math.random() * maxX);
+                const randomY = Math.floor(Math.random() * maxY);
+                
+                noBtn.style.position = 'fixed';
+                noBtn.style.left = randomX + 'px';
+                noBtn.style.top = randomY + 'px';
+                
+                // Increase love level a bit when hovering over "no"
+                if (loveLevel < 30) {
+                    loveLevel += 10;
+                    loveFill.style.width = loveLevel + '%';
+                    meterText.textContent = `Love Level: ${loveLevel}% (Hmm...)`;
+                }
+            });
+            
+            noBtn.addEventListener('click', function() {
+                if (loveLevel > 0) {
+                    loveLevel -= 10;
+                    if (loveLevel < 0) loveLevel = 0;
+                    loveFill.style.width = loveLevel + '%';
+                    meterText.textContent = `Love Level: ${loveLevel}% (Oh no!)`;
+                }
+                
+                const funnyResponses = [
+                    "That's okay, I'll just be over here loving you extra to make up for it!",
+                    "Okay, but what if I throw in free pizza for life? 🍕",
+                    "I think you clicked the wrong button. Let me help you find the YES button!",
+                    "That's impossible! The Love-o-Meter must be broken!",
+                    "Okay, I'll ask again tomorrow. And the next day. And the next...",
+                    "I'll win you over with dad jokes and snacks! What do you call a fake noodle? An impasta!",
+                    "I'll love you enough for both of us! That's mathematically possible, right?"
+                ];
+                
+                const randomResponse = funnyResponses[Math.floor(Math.random() * funnyResponses.length)];
+                
+                responseDiv.className = 'response no-response';
+                responseDiv.innerHTML = `
+                    <i class="fas fa-grin-wink"></i> ${randomResponse}
+                `;
+                responseDiv.style.display = 'block';
+                
+                // Make button run away again
+                noBtn.dispatchEvent(new Event('mouseover'));
+            });
+            
+            // Function to create celebration hearts
+            function createCelebrationHeart() {
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                heart.innerHTML = '❤';
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.animation = 'float 3s linear forwards';
+                heart.style.fontSize = (Math.random() * 25 + 20) + 'px';
+                heart.style.color = '#ff6b8b';
+                document.body.appendChild(heart);
+                
+                // Remove heart after animation
+                setTimeout(() => {
+                    heart.remove();
+                }, 3000);
+            }
+            
+            // Animate love meter on load
+            setTimeout(() => {
+                let currentLevel = 0;
+                const interval = setInterval(() => {
+                    if (currentLevel >= 50) {
+                        clearInterval(interval);
+                    } else {
+                        currentLevel += 5;
+                        loveFill.style.width = currentLevel + '%';
+                        meterText.textContent = `Love Level: ${currentLevel}%`;
+                    }
+                }, 100);
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
